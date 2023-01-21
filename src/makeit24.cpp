@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -6,10 +7,46 @@
 using namespace std;
 
 struct solution{
-    vector<int> angka;
+    vector<float> angka;
     vector<string> op;
     int tipe;
 };
+
+timespec duration (timespec awal, timespec akhir) {
+    timespec waktu;
+    if ((akhir.tv_nsec - awal.tv_nsec) < 0) {
+        waktu.tv_sec = akhir.tv_sec - awal.tv_sec - 1;
+        waktu.tv_nsec = 1000000000 + akhir.tv_sec - awal.tv_nsec;
+    }
+    else {
+        waktu.tv_sec = akhir.tv_sec - awal.tv_sec;
+        waktu.tv_nsec = akhir.tv_sec - awal.tv_sec;
+    }
+    return waktu;
+}
+string toString(solution listSolusi){
+    string concat;
+    int a = (int) listSolusi.angka[0];
+    int b = (int) listSolusi.angka[1];
+    int c = (int) listSolusi.angka[2];
+    int d = (int) listSolusi.angka[3];
+    if (listSolusi.tipe == 0) {
+        concat =  "( ( " + to_string(a) + " " + listSolusi.op[0] + " " + to_string(b) + " ) " + listSolusi.op[1] + " " + to_string(c) + " ) " + listSolusi.op[2] + " " + to_string(d) ;
+    }
+    if (listSolusi.tipe == 1) {
+        concat = "( " + to_string(a) + " " + listSolusi.op[0] + " " + "( " + to_string(b) + " " + listSolusi.op[1] + " " + to_string(c) + " ) ) " + listSolusi.op[2] + " " + to_string(d) ;
+    }
+    if (listSolusi.tipe == 2) {
+        concat =  to_string(a) + " " + listSolusi.op[0] + " ( ( " + to_string(b) + " " + listSolusi.op[1] + " " + to_string(c)+ " ) " + listSolusi.op[2] + " " + to_string(d) + " ) ";
+    }
+    if (listSolusi.tipe == 3) {
+        concat = to_string(a) + " " + listSolusi.op[0] + " ( " + to_string(b) + " " + listSolusi.op[1] + " ( " + to_string(c) + " "+ listSolusi.op[2] + " " + to_string(d) + " ) )";
+    }
+    if (listSolusi.tipe == 4) {
+        concat = "( " + to_string(a) + " " + listSolusi.op[0] + " " + to_string(b) +  " ) " + listSolusi.op[1] + " ( " + to_string(c) + " " + listSolusi.op[2] + " " + to_string(d) + " )";
+    } 
+    return concat;
+}
 
 void displaySolution (vector<solution> listSolusi) {
     for (int i; i< size(listSolusi); i++){
@@ -28,7 +65,7 @@ void displaySolution (vector<solution> listSolusi) {
         if (listSolusi[i].tipe == 2) {
             cout<< listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " ( ( ";
             cout<< listSolusi[i].angka[1] << " " << listSolusi[i].op[1] << " " << listSolusi[i].angka[2]<< " ) " ;
-            cout<< listSolusi[i].op[2] << " " << listSolusi[i].angka[3] << ")\n";
+            cout<< listSolusi[i].op[2] << " " << listSolusi[i].angka[3] << " )\n";
         }
         if (listSolusi[i].tipe == 3) {
             cout<< listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " ( ";
@@ -43,7 +80,7 @@ void displaySolution (vector<solution> listSolusi) {
     }
 }
 
-float calculate(int bil1, int bil2, string op) {
+float calculate(float bil1, float bil2, string op) {
     float hasil;
     if (op == "+"){
         hasil = bil1 + bil2;
@@ -55,7 +92,7 @@ float calculate(int bil1, int bil2, string op) {
         hasil = bil1 * bil2;
     }
     else if (op == "/" && bil2 != 0){
-        hasil = bil1 / bil2;
+        hasil = (float) bil1 /  (float) bil2;
     }
     else {
         hasil = -999999;
@@ -63,7 +100,7 @@ float calculate(int bil1, int bil2, string op) {
     return hasil;
 }
 
-vector<solution> evaluate (vector<int> angka, vector<string> operasi){ 
+vector<solution> evaluate (vector<float> angka, vector<string> operasi){ 
     float x,y,z;
     vector<solution> result;
     vector<vector<int>> urutan = {{0,1,2,3},{1,2,0,3},{1,2,3,0},{2,3,1,0}};
@@ -116,7 +153,7 @@ vector<solution> evaluate (vector<int> angka, vector<string> operasi){
     return result;
 }
 
-bool isIn (vector<vector<int>> listbesar, vector<int> listangka){
+bool isIn (vector<vector<float>> listbesar, vector<float> listangka){
     bool ada = false;
     int i = 0;
     while (!ada && i < size(listbesar)){
@@ -135,14 +172,14 @@ bool isIn (vector<vector<int>> listbesar, vector<int> listangka){
     return ada;
 }
 
-vector<vector<int>> permutation (vector<int> listangka) {
-    vector<vector<int>> result;
+vector<vector<float>> permutation (vector<float> listangka) {
+    vector<vector<float>> result;
     for (int i=0; i<size(listangka); i++){
         for(int j=0; j<size(listangka); j++){
             if (j != i){
                 for(int k=0; k<size(listangka); k++){
                     if (k != i && k != j ){
-                        vector<int> listbaru;
+                        vector<float> listbaru;
                         listbaru.push_back(listangka[i]);
                         listbaru.push_back(listangka[j]);
                         listbaru.push_back(listangka[k]);
@@ -175,8 +212,8 @@ vector<vector<string>> acakOp (vector<string> listOp) {
 }
 
 //mengubah string menjadi integer
-vector<int> convertToInt (vector<string> kartu){    
-    vector<int> kartuangka;
+vector<float> convertToFloat (vector<string> kartu){    
+    vector<float> kartuangka;
     for (int i=0; i<size(kartu); i++){
         if (kartu[i] == "A") {
             kartuangka.push_back(1);
@@ -249,11 +286,11 @@ bool validation (const vector<string> &kartu) {
 }
 
 //input random
-vector<int> random(){
+vector<float> random(){
     srand(time(NULL));
     string card[13] = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
     vector<string> karturand;
-    vector<int> kartuint;
+    vector<float> kartufloat;
     for (int i = 0; i<4;i++){
         int idx = rand()%13;
         karturand.push_back(card[idx]);
@@ -262,17 +299,18 @@ vector<int> random(){
         cout << karturand[i] << " ";
     }
     cout << "\n";
-    kartuint = convertToInt(karturand);
+    kartufloat = convertToFloat(karturand);
     //mekanisme random
-    return kartuint;
+    return kartufloat;
 }
 
 //input dari pengguna
-vector<int> self(){
+vector<float> self(){
     string cards;
     vector<string> splitted;
-    vector<int> splittedInt;
+    vector<float> splittedFloat;
     //mekanisme parse string dan validasi input
+    getline(cin,cards);
     do {
         cout << "Masukkan kartu anda: ";
         getline(cin,cards);
@@ -280,17 +318,15 @@ vector<int> self(){
         if (size(splitted) != 4 || !validation(splitted)){
             cout << "Masukan salah! Silakan ulangi lagi\n";
         }
-        else {
-            splittedInt = convertToInt(splitted);
-        }
     } while(size(splitted) != 4 || !validation(splitted));
-    return splittedInt;
+    splittedFloat = convertToFloat(splitted);
+    return splittedFloat;
 }
 
 //main program
 int main() {
     int mech;
-    vector<int> card ;
+    vector<float> card ;
     vector<string> kartu;
     vector<string> operation = {"+","-","*","/"};
     int jumlahSolusi = 0;
@@ -302,7 +338,7 @@ int main() {
         cout << "2. Input sendiri" << "\n";
         cin >> mech;
         if (mech != 2 && mech != 1){
-            cout << "Masukkan anda salah! \n";
+            cout << "Masukan anda salah! \n";
         }
     } while (mech != 2 && mech !=1);
     if (mech == 1) {
@@ -312,8 +348,10 @@ int main() {
         card = self();
     }
 
+    timespec awal, akhir;
+    clock_gettime(CLOCK_REALTIME, &awal);
     //pengacakan angka
-    vector<vector<int>> resultCard = permutation(card);
+    vector<vector<float>> resultCard = permutation(card);
 
     //pengacakan operasi
     vector<vector<string>> op = acakOp(operation);
@@ -329,5 +367,35 @@ int main() {
     }
     cout << size(solutionList) << " solutions found!\n";
     displaySolution(solutionList);
+    clock_gettime(CLOCK_REALTIME, &akhir);
+    timespec durasi = duration(awal,akhir);
+    cout << "\nExecution time: ";
+    cout << durasi.tv_sec << "." << durasi.tv_nsec << " detik\n";
+    
+    cout << "Apakah anda ingin menyimpan solusi ini?\n";
+    cout << "1. Ya\n";
+    cout << "2. Tidak\n";
+    int inp;
+    cin >> inp;
+    if (inp == 1){
+        string stringkartu = "";
+        for (int a=0; a<4; a++) {
+            stringkartu = stringkartu + to_string((int) card[a]) + " ";
+        }
+        ofstream file;
+        string fileName;
+        string sol = to_string(size(solutionList)) + " solutions found!";
+        cout << "Masukkan nama file: ";
+        cin >> fileName;
+        string txt = "../test/" + fileName;
+        file.open(txt,ios::app);
+        file << stringkartu << endl;
+        file << sol << endl << endl;
+        for (int k =0; k<size(solutionList); k++) {
+            file << toString(solutionList[k]) << endl;
+        }
+        file.close();
+        cout << "Berhasil disimpan!";
+    }
     return 0;
 }
