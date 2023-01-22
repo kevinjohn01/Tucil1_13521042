@@ -6,12 +6,14 @@
 #include <time.h>
 using namespace std;
 
+//pendefinisian tipe data solution
 struct solution{
     vector<float> angka;
     vector<string> op;
     int tipe;
 };
 
+//fungsi untuk menghitung durasi eksekusi program
 timespec duration (timespec awal, timespec akhir) {
     timespec waktu;
     if ((akhir.tv_nsec - awal.tv_nsec) < 0) {
@@ -20,10 +22,33 @@ timespec duration (timespec awal, timespec akhir) {
     }
     else {
         waktu.tv_sec = akhir.tv_sec - awal.tv_sec;
-        waktu.tv_nsec = akhir.tv_sec - awal.tv_sec;
+        waktu.tv_nsec = akhir.tv_nsec - awal.tv_nsec;
     }
     return waktu;
 }
+
+//Mengubah output ke bentuk kartu (string) kembali
+string toCard (int kartuint) {
+    string card;
+    if (kartuint == 1) {
+        card = "A";
+    }
+    else if (kartuint == 11){
+        card = "J";
+    }
+    else if (kartuint == 12){
+        card = "Q";
+    }
+    else if (kartuint == 13){
+        card = "K";
+    }
+    else {
+        card = to_string(kartuint);
+    }
+    return card;
+}
+
+//mengubah solusi ke dalam bentuk string
 string toString(solution listSolusi){
     string concat;
     int a = (int) listSolusi.angka[0];
@@ -31,55 +56,31 @@ string toString(solution listSolusi){
     int c = (int) listSolusi.angka[2];
     int d = (int) listSolusi.angka[3];
     if (listSolusi.tipe == 0) {
-        concat =  "( ( " + to_string(a) + " " + listSolusi.op[0] + " " + to_string(b) + " ) " + listSolusi.op[1] + " " + to_string(c) + " ) " + listSolusi.op[2] + " " + to_string(d) ;
+        concat =  "( ( " + toCard(a) + " " + listSolusi.op[0] + " " + toCard(b) + " ) " + listSolusi.op[1] + " " + toCard(c) + " ) " + listSolusi.op[2] + " " + toCard(d) ;
     }
     if (listSolusi.tipe == 1) {
-        concat = "( " + to_string(a) + " " + listSolusi.op[0] + " " + "( " + to_string(b) + " " + listSolusi.op[1] + " " + to_string(c) + " ) ) " + listSolusi.op[2] + " " + to_string(d) ;
+        concat = "( " + toCard(a) + " " + listSolusi.op[0] + " " + "( " + toCard(b) + " " + listSolusi.op[1] + " " + toCard(c) + " ) ) " + listSolusi.op[2] + " " + toCard(d) ;
     }
     if (listSolusi.tipe == 2) {
-        concat =  to_string(a) + " " + listSolusi.op[0] + " ( ( " + to_string(b) + " " + listSolusi.op[1] + " " + to_string(c)+ " ) " + listSolusi.op[2] + " " + to_string(d) + " ) ";
+        concat =  toCard(a) + " " + listSolusi.op[0] + " ( ( " + toCard(b) + " " + listSolusi.op[1] + " " + toCard(c)+ " ) " + listSolusi.op[2] + " " + toCard(d) + " ) ";
     }
     if (listSolusi.tipe == 3) {
-        concat = to_string(a) + " " + listSolusi.op[0] + " ( " + to_string(b) + " " + listSolusi.op[1] + " ( " + to_string(c) + " "+ listSolusi.op[2] + " " + to_string(d) + " ) )";
+        concat = toCard(a) + " " + listSolusi.op[0] + " ( " + toCard(b) + " " + listSolusi.op[1] + " ( " + toCard(c) + " "+ listSolusi.op[2] + " " + toCard(d) + " ) )";
     }
     if (listSolusi.tipe == 4) {
-        concat = "( " + to_string(a) + " " + listSolusi.op[0] + " " + to_string(b) +  " ) " + listSolusi.op[1] + " ( " + to_string(c) + " " + listSolusi.op[2] + " " + to_string(d) + " )";
+        concat = "( " + toCard(a) + " " + listSolusi.op[0] + " " + toCard(b) +  " ) " + listSolusi.op[1] + " ( " + toCard(c) + " " + listSolusi.op[2] + " " + toCard(d) + " )";
     } 
     return concat;
 }
 
+//Menampilkan seluruh solusi
 void displaySolution (vector<solution> listSolusi) {
     for (int i; i< size(listSolusi); i++){
-        if (listSolusi[i].tipe == 0) {
-            cout<< "( ( " << listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " ";
-            cout<< listSolusi[i].angka[1] << " ) " << listSolusi[i].op[1] << " ";
-            cout<< listSolusi[i].angka[2] << " ) " << listSolusi[i].op[2] << " ";
-            cout<< listSolusi[i].angka[3] << "\n";
-        }
-        if (listSolusi[i].tipe == 1) {
-            cout<< "( " << listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " ";
-            cout<< "( " << listSolusi[i].angka[1] << " " << listSolusi[i].op[1] << " ";
-            cout<< listSolusi[i].angka[2] << " ) ) " << listSolusi[i].op[2] << " ";
-            cout<< listSolusi[i].angka[3] << "\n";
-        }
-        if (listSolusi[i].tipe == 2) {
-            cout<< listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " ( ( ";
-            cout<< listSolusi[i].angka[1] << " " << listSolusi[i].op[1] << " " << listSolusi[i].angka[2]<< " ) " ;
-            cout<< listSolusi[i].op[2] << " " << listSolusi[i].angka[3] << " )\n";
-        }
-        if (listSolusi[i].tipe == 3) {
-            cout<< listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " ( ";
-            cout<< listSolusi[i].angka[1] << " " << listSolusi[i].op[1] << " ( " << listSolusi[i].angka[2] << " ";
-            cout<< listSolusi[i].op[2] << " " << listSolusi[i].angka[3] << " ) )\n";
-        }
-        if (listSolusi[i].tipe == 4) {
-            cout<< "( " << listSolusi[i].angka[0] << " " << listSolusi[i].op[0] << " " << listSolusi[i].angka[1] <<  " ) ";
-            cout<< listSolusi[i].op[1] ;
-            cout<< " ( " << listSolusi[i].angka[2] << " "<< listSolusi[i].op[2] << " " << listSolusi[i].angka[3] << " )\n";
-        }
+        cout << toString(listSolusi[i]) << endl;
     }
 }
 
+//Mengevaluasi nilai antara dua bilangan dengan operasi yang ditentukan
 float calculate(float bil1, float bil2, string op) {
     float hasil;
     if (op == "+"){
@@ -100,6 +101,7 @@ float calculate(float bil1, float bil2, string op) {
     return hasil;
 }
 
+//Mengevaluasi apakah dapat diperoleh nilai 24 dari list angka dan operasi yang didapat
 vector<solution> evaluate (vector<float> angka, vector<string> operasi){ 
     float x,y,z;
     vector<solution> result;
@@ -134,9 +136,6 @@ vector<solution> evaluate (vector<float> angka, vector<string> operasi){
             solusi.tipe = i;
             result.push_back(solusi);
         }
-        x = 0;
-        y = 0;
-        z = 0;
     }
     
     //pengecekan 2 kelompok berisi 2 angka
@@ -147,12 +146,10 @@ vector<solution> evaluate (vector<float> angka, vector<string> operasi){
         solusi.tipe = 4;
         result.push_back(solusi);
     }
-    x = 0;
-    y = 0;
-    z = 0;
     return result;
 }
 
+//Mengecek apakah permutasi angka sudah ada di list
 bool isIn (vector<vector<float>> listbesar, vector<float> listangka){
     bool ada = false;
     int i = 0;
@@ -172,6 +169,7 @@ bool isIn (vector<vector<float>> listbesar, vector<float> listangka){
     return ada;
 }
 
+//Menghasilkan semua pengacakan angka yang mungkin
 vector<vector<float>> permutation (vector<float> listangka) {
     vector<vector<float>> result;
     for (int i=0; i<size(listangka); i++){
@@ -195,6 +193,7 @@ vector<vector<float>> permutation (vector<float> listangka) {
     return result;
 }
 
+//Menghasilkan seluruh pengacakan operasi yang mungkin
 vector<vector<string>> acakOp (vector<string> listOp) {
     vector<vector<string>> result;
     for (int i=0; i<size(listOp); i++){
@@ -211,7 +210,7 @@ vector<vector<string>> acakOp (vector<string> listOp) {
     return result;
 }
 
-//mengubah string menjadi integer
+//mengubah string menjadi float
 vector<float> convertToFloat (vector<string> kartu){    
     vector<float> kartuangka;
     for (int i=0; i<size(kartu); i++){
@@ -331,31 +330,32 @@ int main() {
     vector<string> operation = {"+","-","*","/"};
     int jumlahSolusi = 0;
 
-    //mekanisme pemilihan kartu
+    //mekanisme pemilihan kartu (random atau input sendiri)
     do {
         cout << "Pilih cara anda memasukkan kartu" << "\n";
         cout << "1. Random" << "\n";
         cout << "2. Input sendiri" << "\n";
         cin >> mech;
-        if (mech != 2 && mech != 1){
+        if (mech == 1) {
+            card = random();
+        }
+        else if (mech == 2) {
+            card = self();
+        }
+        else {
             cout << "Masukan anda salah! \n";
         }
     } while (mech != 2 && mech !=1);
-    if (mech == 1) {
-        card = random();
-    }
-    else if (mech == 2) {
-        card = self();
-    }
-
+    
+    //pengambilan waktu awal
     timespec awal, akhir;
     clock_gettime(CLOCK_REALTIME, &awal);
-    //pengacakan angka
-    vector<vector<float>> resultCard = permutation(card);
 
-    //pengacakan operasi
+    //pengacakan angka dan operasi
+    vector<vector<float>> resultCard = permutation(card);
     vector<vector<string>> op = acakOp(operation);
 
+    //evaluasi nilai untuk semua kombinasi angka dan operasi yang mungkin
     vector<solution> solutionList;
     for (int i=0; i<size(resultCard); i++){
         for(int j=0; j<size(op); j++){
@@ -365,30 +365,56 @@ int main() {
             }
         }
     }
-    cout << size(solutionList) << " solutions found!\n";
+    if (size(solutionList)>1) {
+        cout << size(solutionList) << " solutions found!\n";
+    }
+    else {
+        cout << size(solutionList) << " solution found!\n";
+    }
     displaySolution(solutionList);
+
+    //pengambilan waktu akhir untuk menentukan execution time
     clock_gettime(CLOCK_REALTIME, &akhir);
     timespec durasi = duration(awal,akhir);
     cout << "\nExecution time: ";
     cout << durasi.tv_sec << "." << durasi.tv_nsec << " detik\n";
     
-    cout << "Apakah anda ingin menyimpan solusi ini?\n";
-    cout << "1. Ya\n";
-    cout << "2. Tidak\n";
+    //penyimpanan solusi
     int inp;
-    cin >> inp;
+    do {
+        cout << "Apakah anda ingin menyimpan solusi ini?\n";
+        cout << "1. Ya\n";
+        cout << "2. Tidak\n";
+        cin >> inp;
+        if (inp != 1 && inp != 2) {
+            cout << "Masukan belum tepat! Silakan ulangi lagi\n";
+        }
+    } while(inp != 1 && inp != 2);
+
+    //jika pengguna ingin menyimpan solusi
     if (inp == 1){
+        ofstream file;
+        string fileName, sol;
+
+        //Menampilkan kartu awal
         string stringkartu = "";
         for (int a=0; a<4; a++) {
-            stringkartu = stringkartu + to_string((int) card[a]) + " ";
+            stringkartu = stringkartu + toCard((int) card[a]) + " ";
         }
-        ofstream file;
-        string fileName;
-        string sol = to_string(size(solutionList)) + " solutions found!";
+
+        //Pengguna memasukkan nama file yang ingin disimpan
         cout << "Masukkan nama file: ";
         cin >> fileName;
         string txt = "../test/" + fileName;
         file.open(txt,ios::app);
+
+        //Menuliskan solusi ke dalam file
+        if (size(solutionList)>1) {
+            sol = to_string(size(solutionList)) + " solutions found!";
+        }
+        else {
+            sol = to_string(size(solutionList)) + " solution found!";
+        }
         file << stringkartu << endl;
         file << sol << endl << endl;
         for (int k =0; k<size(solutionList); k++) {
