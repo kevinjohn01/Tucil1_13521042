@@ -27,6 +27,13 @@ timespec duration (timespec awal, timespec akhir) {
     return waktu;
 }
 
+void printZero(int count) {
+    while (count>0) {
+        cout << 0;
+        count -= 1;
+    }
+}
+
 //Mengubah output ke bentuk kartu (string) kembali
 string toCard (int kartuint) {
     string card;
@@ -217,33 +224,6 @@ vector<float> convertToFloat (vector<string> kartu){
         if (kartu[i] == "A") {
             kartuangka.push_back(1);
         }
-        else if(kartu[i] == "2"){
-            kartuangka.push_back(2);
-        }
-        else if(kartu[i] == "3"){
-            kartuangka.push_back(3);
-        }
-        else if(kartu[i] == "4"){
-            kartuangka.push_back(4);
-        }
-        else if(kartu[i] == "5"){
-            kartuangka.push_back(5);
-        }
-        else if(kartu[i] == "6"){
-            kartuangka.push_back(6);
-        }
-        else if(kartu[i] == "7"){
-            kartuangka.push_back(7);
-        }
-        else if(kartu[i] == "8"){
-            kartuangka.push_back(8);
-        }
-        else if(kartu[i] == "9"){
-            kartuangka.push_back(9);
-        }
-        else if(kartu[i] == "10"){
-            kartuangka.push_back(10);
-        }
         else if(kartu[i] == "J"){
             kartuangka.push_back(11);
         }
@@ -252,6 +232,9 @@ vector<float> convertToFloat (vector<string> kartu){
         }
         else if(kartu[i] == "K"){
             kartuangka.push_back(13);
+        }
+        else {
+            kartuangka.push_back(stoi(kartu[i]));
         }
     }
     return kartuangka;
@@ -377,7 +360,10 @@ int main() {
     clock_gettime(CLOCK_REALTIME, &akhir);
     timespec durasi = duration(awal,akhir);
     cout << "\nExecution time: ";
-    cout << durasi.tv_sec << "." << durasi.tv_nsec << " detik\n";
+    int countZero = to_string(durasi.tv_nsec).length();
+    cout << durasi.tv_sec << "." ;
+    printZero(9-countZero);
+    cout << durasi.tv_nsec << " detik\n";
     
     //penyimpanan solusi
     int inp;
@@ -421,7 +407,8 @@ int main() {
             file << toString(solutionList[k]) << endl;
         }
         file.close();
-        cout << "Berhasil disimpan!";
+        cout << "Berhasil disimpan!\n";
     }
+    cout << "Terima kasih telah menggunakan program ini! ^^";
     return 0;
 }
