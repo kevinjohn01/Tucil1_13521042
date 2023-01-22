@@ -3,10 +3,10 @@
 > Program yang digunakan untuk mencari semua solusi yang mungkin dari empat kartu pada permainan kartu 24. Program ini dibuat sebagai pemenuhan Tugas Kecil 1 mata kuliah IF2211 Strategi Algoritma
 
 ## Table Of Contents
-*[General Information](#general-information)
-*[Requirement](#requirement)
-*[Usage](#usage)
-*[Author](#author)
+* [General Information](#general-information)
+* [Requirement](#requirement)
+* [Usage](#usage)
+* [Author](#author)
 
 ## General Information
 - Program ini adalah program yang dapat menghasilkan solusi ekspresi apa yang menghasilkan nilai 24 dari 4 kartu.
