@@ -17,7 +17,7 @@
 - Program ini menggunakan bahasa pemrograman C++, jadi perangkat anda harus terinstall bahasa ini terlebih dahulu untuk menggunakannya.
 
 ## Usage
-- Clone repository ini, kemudian pada terminal, pastikan directory terdapat pada folder bin. Program dapat dijalankan dengan perintah `.\makeit24`
+- Clone repository ini, kemudian pada terminal, pastikan directory terdapat pada folder bin. Program dapat dijalankan dengan perintah `./makeit24`, atau dengan compile file program terlebih dahulu dengan `g++ makeit24.cpp -o makeit24` pada directory folder src ,kemudian memasukkan command `./makeit24` untuk menjalankan program.
 
 ## Author
 - Kevin John Wesley Hutabarat (13521042)
